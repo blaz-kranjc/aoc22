@@ -4,24 +4,21 @@
   --resolver lts-20.2
 -}
 
-import Data.List
-
-parse :: String -> [[Int]]
-parse s = combine $ foldl parse' ([], []) (lines s)
+top3sums :: String -> [Int]
+top3sums s = fst $ foldl update ([0, 0, 0], 0) (lines s)
   where
-    combine (aas, as) = as : aas
-    parse' acc "" = (combine acc, [])
-    parse' (aas, as) s = (aas, (read s :: Int) : as)
-
-combineCalories :: [[Int]] -> [Int]
-combineCalories = fmap sum
-
-max3 :: [Int] -> [Int]
-max3 is = take 3 . reverse $ sort is
+    update (as, v) "" = (top3 as v, 0)
+      where
+        top3 as@[a1, a2, a3] v
+          | a1 < v = [v, a1, a2]
+          | a2 < v = [a1, v, a2]
+          | a3 < v = [a1, a2, v]
+          | otherwise = as
+    update (as, a) s = (as, (read s :: Int) + a)
 
 main :: IO ()
 main = do
   out <- readFile "data/01.txt"
-  let topCalories = max3 . combineCalories $ parse out
+  let topCalories = top3sums out
   print $ head topCalories
   print $ sum topCalories
