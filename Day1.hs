@@ -13,7 +13,7 @@ top3sums s = uncurry top3 $ foldl update ([0, 0, 0], 0) $ lines s
       | a3 < v = [a1, a2, v]
       | otherwise = as
     update (as, v) "" = (top3 as v, 0)
-    update (as, v) s = (as, (read s :: Int) + v)
+    update (as, v) s = (as, v + read s :: Int)
 
 main :: IO ()
 main = do
