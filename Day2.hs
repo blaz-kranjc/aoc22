@@ -13,12 +13,7 @@ parse s = parse1 <$> lines s
     parse1 l = (parseChar 'A' (l!!0), parseChar 'X' (l!!2))
 
 score1 :: (Int, Int) -> Int
-score1 (l, r) = score' result + r
-  where
-    result = (r - l + 3) `mod` 3
-    score' 0 = 3
-    score' 1 = 6
-    score' _ = 0
+score1 (l, r) = (r - l + 1) `mod` 3 * 3 + r
 
 score2 :: (Int, Int) -> Int
 score2 (l, r) = (l + r) `mod` 3 + 1 + (r - 1) * 3
