@@ -21,13 +21,7 @@ score1 (l, r) = score' result + r
     score' _ = 0
 
 score2 :: (Int, Int) -> Int
-score2 (l, r) = result
-  where
-    result
-      | r == 1 = [3, 1, 2]!!(l-1)
-      | r == 2 = l + 3
-      | r == 3 = [2, 3, 1]!!(l-1) + 6
-      | otherwise = error "unexpected number"
+score2 (l, r) = (l + r) `mod` 3 + 1 + (r - 1) * 3
 
 main :: IO ()
 main = do
