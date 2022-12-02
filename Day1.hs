@@ -4,19 +4,24 @@
   --resolver lts-20.2
 -}
 
-top3sums :: String -> [Int]
-top3sums s = uncurry tops $ foldl update ([0, 0, 0], 0) $ lines s
+maxN :: Int -> [Int] -> [Int]
+maxN n = foldl maxN' (replicate n 0)
   where
-    tops [] _ = []
-    tops a@(h:t) v
+    maxN' [] _ = []
+    maxN' a@(h:t) v
       | h < v = v : take (length t) a
-      | otherwise = h : tops t v
-    update (as, v) "" = (tops as v, 0)
-    update (as, v) s = (as, v + read s :: Int)
+      | otherwise = h : maxN' t v
+
+parse :: String -> [[Int]]
+parse s = combine $ foldl parse' ([], []) (lines s)
+  where
+    combine = uncurry $ flip (:)
+    parse' acc "" = (combine acc, [])
+    parse' (aas, as) s = (aas, (read s :: Int) : as)
 
 main :: IO ()
 main = do
   input <- readFile "data/01.txt"
-  let topCalories = top3sums input
+  let topCalories = maxN 3 $ sum <$> parse input
   print $ head topCalories
   print $ sum topCalories
