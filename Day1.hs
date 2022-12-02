@@ -16,7 +16,7 @@ top3sums s = uncurry tops $ foldl update ([0, 0, 0], 0) $ lines s
 
 main :: IO ()
 main = do
-  out <- readFile "data/01.txt"
-  let topCalories = top3sums out
+  input <- readFile "data/01.txt"
+  let topCalories = top3sums input
   print $ head topCalories
   print $ sum topCalories
