@@ -32,12 +32,9 @@ parse s =
   in (parseStacks stack, parseMove <$> lines moves)
 
 updateByOne :: [[Char]] -> Move -> [[Char]]
-updateByOne stacks (Move n from to)
-  | n == 0 = stacks
-  | otherwise = updateByOne newStack (Move (n-1) from to)
-    where
-      v = head $ stacks!!from
-      newStack = stacks & ix to %~ (v:) & ix from %~ drop 1
+updateByOne stacks (Move n from to) = iterate update' stacks !! n
+  where
+    update' s = s & ix to %~ ((head $ s!!from):) & ix from %~ drop 1
 
 updateGroup :: [[Char]] -> Move -> [[Char]]
 updateGroup stacks (Move n from to) =
