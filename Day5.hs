@@ -31,15 +31,16 @@ parse s =
   let [stack, moves] = splitOn "\n\n" s
   in (parseStacks stack, parseMove <$> lines moves)
 
-updateByOne :: [[Char]] -> Move -> [[Char]]
-updateByOne stacks (Move n from to) = iterate update' stacks !! n
-  where
-    update' s = s & ix to %~ ((head $ s!!from):) & ix from %~ drop 1
-
-updateGroup :: [[Char]] -> Move -> [[Char]]
-updateGroup stacks (Move n from to) =
+moveN :: Int -> Int -> Int -> [[Char]] -> [[Char]]
+moveN n from to stacks =
   let group = take n (stacks!!from)
   in stacks & ix to %~ (group++) & ix from %~ drop n
+
+updateByOne :: [[Char]] -> Move -> [[Char]]
+updateByOne stacks (Move n from to) = iterate (moveN 1 from to) stacks !! n
+
+updateGroup :: [[Char]] -> Move -> [[Char]]
+updateGroup stacks (Move n from to) = moveN n from to stacks
 
 main :: IO ()
 main = do
