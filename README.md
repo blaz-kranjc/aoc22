@@ -1,5 +1,7 @@
 # :star: Advent of Code 2022 :star:
 
+  ![haskell logo as christmas hat](ChristmasHaskell.png)
+
 Dashing through the code, in a Haskell way </br>
 Solving puzzles left and right, on this coding day </br>
 With a notebook and a pen, and a sharp mind to boot </br>
