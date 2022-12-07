@@ -28,7 +28,7 @@ sizes filesystem = snd <$> Map.toList (foldl updateMap Map.empty filesystem)
 main :: IO ()
 main = do
   input <- readFile "data/07.txt"
-  let filesystemSizes = sort . sizes . parse $ lines input
-  print $ sum $ takeWhile (<100000) filesystemSizes
-  let available = 70000000 - last filesystemSizes
-  print $ head $ dropWhile (\s -> available + s < 30000000) filesystemSizes
+  let filesystemSizes = sizes . parse $ lines input
+  print $ sum $ filter (<100000) filesystemSizes
+  let available = 70000000 - maximum filesystemSizes
+  print $ minimum $ filter (\s -> available + s >= 30000000) filesystemSizes
