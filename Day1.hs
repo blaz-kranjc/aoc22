@@ -13,15 +13,15 @@ maxN n = foldl maxN' (replicate n 0)
       | otherwise = h : maxN' t v
 
 parse :: String -> [[Int]]
-parse s = combine $ foldl parse' ([], []) (lines s)
+parse s = combine . foldl parse' ([], []) . lines $ s
   where
     combine = uncurry $ flip (:)
     parse' acc "" = (combine acc, [])
-    parse' (aas, as) s = (aas, (read s :: Int) : as)
+    parse' (aas, as) s = (aas, read s : as)
 
 main :: IO ()
 main = do
   input <- readFile "data/01.txt"
-  let topCalories = maxN 3 $ sum <$> parse input
-  print $ head topCalories
-  print $ sum topCalories
+  let topCalories = maxN 3 . fmap sum . parse $ input
+  print . head $ topCalories
+  print . sum $ topCalories
