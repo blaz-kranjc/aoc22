@@ -17,7 +17,7 @@ parseStacksLine n is = (\m -> filter (/= ' ') [is!!(4*m+1)]) <$> [0..n-1]
 parseStacks :: String -> [[Char]]
 parseStacks s = foldl updateStack (replicate nStacks []) stackLines
   where
-    stackLines = drop 1 $ reverse $ lines s
+    stackLines = drop 1 . reverse . lines $ s
     nStacks = (length (head stackLines) + 1) `div` 4
     updateStack acc s = zipWith (++) (parseStacksLine nStacks s) acc
 
@@ -46,5 +46,5 @@ main :: IO ()
 main = do
   input <- readFile "data/05.txt"
   let (stack, moves) = parse input
-  print $ head <$> foldl updateByOne stack moves
-  print $ head <$> foldl updateGroup stack moves
+  print . fmap head . foldl updateByOne stack $ moves
+  print . fmap head . foldl updateGroup stack $ moves
