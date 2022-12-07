@@ -10,9 +10,7 @@ import qualified Data.Map as Map
 import Data.List
 import Data.List.Split
 
-data File = File String Integer
-
-parse :: [String] -> [([String], File)]
+parse :: [String] -> [([String], Integer)]
 parse s = fst $ foldl update ([], []) s
   where
     update acc@(filesystem, stack) output
@@ -20,14 +18,14 @@ parse s = fst $ foldl update ([], []) s
       | take 4 output == "$ cd" = (filesystem, drop 5 output:stack)
       | output == "$ ls" || take 3 output == "dir" = acc
       | otherwise =
-        let [size, name] = splitOn " " output
-        in ((stack , File name (read size)):filesystem, stack)
+        let [size, _] = splitOn " " output
+        in ((stack , read size):filesystem, stack)
 
-sizes :: [([String], File)] -> [Integer]
+sizes :: [([String], Integer)] -> [Integer]
 sizes filesystem = snd <$> Map.toList (foldl updateMap Map.empty filesystem)
   where
     parts dirs = flip drop dirs <$> [0..(length dirs - 1)]
-    updateMap m (dirs, File name size) = foldl (updateSize size) m (parts dirs)
+    updateMap m (dirs, size) = foldl (updateSize size) m (parts dirs)
     updateSize size m dir = Map.insert dir (Map.findWithDefault 0 dir m + size) m
 
 main :: IO ()
