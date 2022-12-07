@@ -10,13 +10,13 @@ import qualified Data.Set as Set
 allUnique :: Ord a => [a] -> Bool
 allUnique l = length l == Set.size (Set.fromList l)
 
-indexNUnique :: Ord a => [a] -> Int -> Int
-indexNUnique as n
-  | allUnique (take n as) = n
-  | otherwise = 1 + indexNUnique (tail as) n
+indexNUnique :: Ord a => Int -> [a] -> Int
+indexNUnique n as
+  | allUnique . take n $ as = n
+  | otherwise = 1 + indexNUnique n (tail as)
 
 main :: IO ()
 main = do
   input <- readFile "data/06.txt"
-  print $ indexNUnique input 4
-  print $ indexNUnique input 14
+  print . indexNUnique 4 $ input
+  print . indexNUnique 14 $ input
