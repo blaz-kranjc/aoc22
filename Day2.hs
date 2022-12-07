@@ -7,7 +7,7 @@
 import Data.Char
 
 parse :: String -> [(Int, Int)]
-parse s = parse1 <$> lines s
+parse = fmap parse1 . lines
   where
     parseChar rock value = ord value - ord rock + 1
     parse1 l = (parseChar 'A' (l!!0), parseChar 'X' (l!!2))
@@ -22,5 +22,5 @@ main :: IO ()
 main = do
   input <- readFile "data/02.txt"
   let games = parse input
-  print . sum $ uncurry score1 <$> games
-  print . sum $ uncurry score2 <$> games
+  print . sum . fmap (uncurry score1) $ games
+  print . sum . fmap (uncurry score2) $ games
