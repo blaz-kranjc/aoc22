@@ -21,6 +21,6 @@ overlaps (a, b) (c, d) = ((c >= a) && (c <= b)) || ((a >= c) && (a <= d))
 main :: IO ()
 main = do
   input <- readFile "data/04.txt"
-  let ranges = parse <$> lines input
-  print $ length $ filter (uncurry fullyOverlaps) ranges
-  print $ length $ filter (uncurry overlaps) ranges
+  let ranges = fmap parse . lines $ input
+  print . length . filter (uncurry fullyOverlaps) $ ranges
+  print . length . filter (uncurry overlaps) $ ranges
