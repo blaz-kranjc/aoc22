@@ -7,6 +7,7 @@
 
 import qualified Data.Map as Map
 import Data.List
+import Data.Maybe
 
 parse :: [String] -> [([String], Integer)]
 parse = fst . foldl update ([], [])
@@ -25,7 +26,7 @@ sizes = fmap snd . Map.toList . foldl updateMap Map.empty
   where
     parts dirs = flip drop dirs <$> [0..(length dirs)]
     updateMap m (dirs, size) = foldl (updateSize size) m (parts dirs)
-    updateSize size m dir = Map.insert dir (Map.findWithDefault 0 dir m + size) m
+    updateSize size m dir = Map.alter (pure . (+size) . fromMaybe 0) dir m
 
 main :: IO ()
 main = do
