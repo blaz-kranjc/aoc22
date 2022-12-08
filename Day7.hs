@@ -24,8 +24,7 @@ parse = fst . foldl update ([], [])
 sizes :: [([String], Integer)] -> [Integer]
 sizes = fmap snd . Map.toList . foldl updateMap Map.empty
   where
-    parts dirs = flip drop dirs <$> [0..(length dirs)]
-    updateMap m (dirs, size) = foldl (updateSize size) m (parts dirs)
+    updateMap m (dirs, size) = foldl (updateSize size) m (inits . reverse $ dirs)
     updateSize size m dir = Map.alter (pure . (+size) . fromMaybe 0) dir m
 
 main :: IO ()
