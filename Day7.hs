@@ -22,7 +22,7 @@ parse = fst . foldl update ([], [])
         in ((stack, size):filesystem, stack)
 
 sizes :: [([String], Integer)] -> [Integer]
-sizes = fmap snd . Map.toList . foldl updateMap Map.empty
+sizes = Map.elems . foldl updateMap Map.empty
   where
     updateMap m (dirs, size) = foldl (updateSize size) m (inits . reverse $ dirs)
     updateSize size m dir = Map.alter (pure . (+size) . fromMaybe 0) dir m
