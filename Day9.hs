@@ -7,23 +7,17 @@
 
 import qualified Data.Set as Set
 
-data Direction = R | L | U | D deriving(Show)
+parse :: String -> (Char, Int)
+parse s = (head s, read . drop 2 $ s)
 
-parse :: String -> (Direction, Int)
-parse s
-  | head s == 'R' = (R, read . drop 2 $ s)
-  | head s == 'L' = (L, read . drop 2 $ s)
-  | head s == 'U' = (U, read . drop 2 $ s)
-  | otherwise = (D, read . drop 2 $ s)
-
-headPath :: [(Direction, Int)] -> [(Int, Int)]
+headPath :: [(Char, Int)] -> [(Int, Int)]
 headPath = reverse . fst . foldl update ([(0, 0)], (0, 0))
   where
     update a (direction, 0) = a
-    update (visited, (x, y)) (d@R, amount) = update ((x+1, y):visited, (x+1, y)) (d, amount - 1)
-    update (visited, (x, y)) (d@L, amount) = update ((x-1, y):visited, (x-1, y)) (d, amount - 1)
-    update (visited, (x, y)) (d@U, amount) = update ((x, y+1):visited, (x, y+1)) (d, amount - 1)
-    update (visited, (x, y)) (d@D, amount) = update ((x, y-1):visited, (x, y-1)) (d, amount - 1)
+    update (visited, (x, y)) ('R', amount) = update ((x+1, y):visited, (x+1, y)) ('R', amount - 1)
+    update (visited, (x, y)) ('L', amount) = update ((x-1, y):visited, (x-1, y)) ('L', amount - 1)
+    update (visited, (x, y)) ('U', amount) = update ((x, y+1):visited, (x, y+1)) ('U', amount - 1)
+    update (visited, (x, y)) (c, amount) = update ((x, y-1):visited, (x, y-1)) (c, amount - 1)
 
 tailVisited :: [(Int, Int)] -> [(Int, Int)]
 tailVisited = reverse . foldl update []
