@@ -26,7 +26,6 @@ tailVisited = reverse . foldl update []
       | abs (x-x') <= 1 && abs (y-y') <= 1 = pos
       | otherwise = (x' + signum (x-x'), y' + signum (y-y')):pos
 
-
 main :: IO ()
 main = do
   input <- readFile "data/09.txt"
