@@ -24,8 +24,6 @@ tailVisited = reverse . foldl update []
     update [] v = [v]
     update pos@((x', y'):_) (x, y)
       | abs (x-x') <= 1 && abs (y-y') <= 1 = pos
-      | x == x' = (x', y' + signum (y-y')):pos
-      | y == y' = (x' + signum (x-x'), y'):pos
       | otherwise = (x' + signum (x-x'), y' + signum (y-y')):pos
 
 
