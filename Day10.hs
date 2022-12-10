@@ -8,9 +8,8 @@
 import Data.List.Split
 
 parse :: String -> [Int]
-parse s
-  | s == "noop" = [0]
-  | otherwise = [0, read . drop 5 $ s]
+parse "noop" = [0]
+parse s = [0, read . drop 5 $ s]
 
 pixel :: (Int, Int) -> Char
 pixel (i, v)
