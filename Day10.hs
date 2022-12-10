@@ -2,12 +2,10 @@
 {-
   stack script
   --resolver lts-20.2
-  --package containers
   --package split
 -}
 
 import Data.List.Split
-import qualified Data.Set as Set
 
 parse :: String -> [Int]
 parse s
