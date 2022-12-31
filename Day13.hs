@@ -11,7 +11,7 @@ import Data.List.Split
 import Data.Maybe
 import Lens.Micro
 
-data PacketPart = Val Int | Arr [PacketPart] deriving Show
+data PacketPart = Val Int | Arr [PacketPart]
 
 instance Eq PacketPart where
   (Val l) == (Val r) = l == r
